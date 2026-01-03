@@ -95,43 +95,6 @@ const CompanionLessonPage = () => {
         <p className="text-sm font-medium">Lesson</p>
       </div>
 
-      {/* Navigation Header */}
-      <header className="border-b border-border bg-white">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xl" style={{ backgroundColor: subjectColor }}>
-              C
-            </div>
-            <span className="text-xl font-bold">Converso</span>
-          </Link>
-          <nav className="flex items-center gap-6">
-            <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">
-              Home
-            </Link>
-            <Link href="/companion" className="text-sm text-muted-foreground hover:text-foreground">
-              Learning Companions
-            </Link>
-            <Link href="/journey" className="text-sm text-muted-foreground hover:text-foreground">
-              My Journey
-            </Link>
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center text-white text-xs font-semibold">
-                A
-              </div>
-              <button className="w-8 h-8 bg-destructive rounded flex items-center justify-center hover:bg-destructive/90 transition-colors">
-                <Image
-                  src="/icons/logout.svg"
-                  alt="Logout"
-                  width={16}
-                  height={16}
-                  className="invert"
-                />
-              </button>
-            </div>
-          </nav>
-        </div>
-      </header>
-
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6">
         {/* Lesson Information Card */}

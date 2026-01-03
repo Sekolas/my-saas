@@ -95,28 +95,6 @@ const CompanionBuilderPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-white">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/images/logo.svg"
-              alt="Converso Logo"
-              width={120}
-              height={40}
-            />
-          </Link>
-          <nav className="flex items-center gap-4">
-            <Link href="/companion" className="text-sm text-muted-foreground hover:text-foreground">
-              Companions
-            </Link>
-            <Link href="/sign-in" className="text-sm text-muted-foreground hover:text-foreground">
-              Sign In
-            </Link>
-          </nav>
-        </div>
-      </header>
-
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto">
           {/* Page Header */}
