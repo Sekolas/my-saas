@@ -81,3 +81,18 @@ interface CompanionComponentProps {
   voice: string;
   style: string;
 }
+
+interface CompanionListItem {
+  id: string;
+  name: string;
+  topic: string;
+  subject: string;
+  duration: string;
+  icon: string;
+  iconBg: string;
+}
+
+interface CompanionListProps {
+  title?: string;
+  companions?: CompanionListItem[];
+}

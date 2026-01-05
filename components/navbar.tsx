@@ -16,9 +16,8 @@ function Navbar() {
           />
         </div>
       </Link>
-      <div className='flex items-center gap-10'>
+      <div className='flex items-center gap-4'>
         <NavItems />
-
         <p>sign in</p>
       </div>
     </nav>
