@@ -76,10 +76,10 @@ const CompanionBuilderPage = () => {
     try {
       // Handle companion creation logic here
       console.log('Creating companion:', companionData)
-      
+
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000))
-      
+
       // Redirect to companion page or show success message
       alert('Companion created successfully!')
       // You can redirect here: router.push('/companion')
@@ -138,11 +138,10 @@ const CompanionBuilderPage = () => {
                       key={subject}
                       type="button"
                       onClick={() => handleInputChange('subject', subject)}
-                      className={`rounded-2xl border-2 p-4 text-left transition-all ${
-                        formData.subject === subject
+                      className={`rounded-2xl border-2 p-4 text-left transition-all ${formData.subject === subject
                           ? 'border-primary bg-primary/10'
                           : 'border-black bg-white hover:shadow-md'
-                      }`}
+                        }`}
                       style={{
                         borderColor: formData.subject === subject
                           ? undefined
@@ -190,7 +189,7 @@ const CompanionBuilderPage = () => {
                 <label className="text-sm font-medium">
                   Voice Settings
                 </label>
-                
+
                 <div className="grid grid-cols-2 gap-4">
                   {/* Voice Gender */}
                   <div className="space-y-2">
@@ -199,22 +198,20 @@ const CompanionBuilderPage = () => {
                       <button
                         type="button"
                         onClick={() => handleInputChange('voiceGender', 'male')}
-                        className={`flex-1 rounded-xl border-2 p-3 transition-all ${
-                          formData.voiceGender === 'male'
+                        className={`flex-1 rounded-xl border-2 p-3 transition-all ${formData.voiceGender === 'male'
                             ? 'border-primary bg-primary/10'
                             : 'border-border bg-background hover:border-primary/50'
-                        }`}
+                          }`}
                       >
                         <span className="font-medium">Male</span>
                       </button>
                       <button
                         type="button"
                         onClick={() => handleInputChange('voiceGender', 'female')}
-                        className={`flex-1 rounded-xl border-2 p-3 transition-all ${
-                          formData.voiceGender === 'female'
+                        className={`flex-1 rounded-xl border-2 p-3 transition-all ${formData.voiceGender === 'female'
                             ? 'border-primary bg-primary/10'
                             : 'border-border bg-background hover:border-primary/50'
-                        }`}
+                          }`}
                       >
                         <span className="font-medium">Female</span>
                       </button>
@@ -228,22 +225,20 @@ const CompanionBuilderPage = () => {
                       <button
                         type="button"
                         onClick={() => handleInputChange('voiceStyle', 'casual')}
-                        className={`flex-1 rounded-xl border-2 p-3 transition-all ${
-                          formData.voiceStyle === 'casual'
+                        className={`flex-1 rounded-xl border-2 p-3 transition-all ${formData.voiceStyle === 'casual'
                             ? 'border-primary bg-primary/10'
                             : 'border-border bg-background hover:border-primary/50'
-                        }`}
+                          }`}
                       >
                         <span className="font-medium">Casual</span>
                       </button>
                       <button
                         type="button"
                         onClick={() => handleInputChange('voiceStyle', 'formal')}
-                        className={`flex-1 rounded-xl border-2 p-3 transition-all ${
-                          formData.voiceStyle === 'formal'
+                        className={`flex-1 rounded-xl border-2 p-3 transition-all ${formData.voiceStyle === 'formal'
                             ? 'border-primary bg-primary/10'
                             : 'border-border bg-background hover:border-primary/50'
-                        }`}
+                          }`}
                       >
                         <span className="font-medium">Formal</span>
                       </button>
@@ -267,11 +262,10 @@ const CompanionBuilderPage = () => {
                   <button
                     type="button"
                     onClick={() => handleInputChange('teachingStyle', 'casual')}
-                    className={`flex-1 rounded-xl border-2 p-3 transition-all ${
-                      formData.teachingStyle === 'casual'
+                    className={`flex-1 rounded-xl border-2 p-3 transition-all ${formData.teachingStyle === 'casual'
                         ? 'border-primary bg-primary/10'
                         : 'border-border bg-background hover:border-primary/50'
-                    }`}
+                      }`}
                   >
                     <span className="font-medium">Casual</span>
                     <p className="text-xs text-muted-foreground mt-1">
@@ -281,11 +275,10 @@ const CompanionBuilderPage = () => {
                   <button
                     type="button"
                     onClick={() => handleInputChange('teachingStyle', 'formal')}
-                    className={`flex-1 rounded-xl border-2 p-3 transition-all ${
-                      formData.teachingStyle === 'formal'
+                    className={`flex-1 rounded-xl border-2 p-3 transition-all ${formData.teachingStyle === 'formal'
                         ? 'border-primary bg-primary/10'
                         : 'border-border bg-background hover:border-primary/50'
-                    }`}
+                      }`}
                   >
                     <span className="font-medium">Formal</span>
                     <p className="text-xs text-muted-foreground mt-1">
