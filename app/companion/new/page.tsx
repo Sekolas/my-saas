@@ -6,6 +6,9 @@ import { Input } from '@/components/ui/input'
 import Image from 'next/image'
 import Link from 'next/link'
 import { subjects, subjectsColors, voices } from '@/constants'
+import { useUser } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
+import { createCompanion } from '@/app/actions/companion'
 
 const CompanionBuilderPage = () => {
   const [formData, setFormData] = useState({
@@ -52,40 +55,42 @@ const CompanionBuilderPage = () => {
     return Object.keys(newErrors).length === 0
   }
 
+  const { user } = useUser()
+  const router = useRouter()
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!validateForm()) {
+    if (!validateForm() || !user) {
       return
     }
 
     setIsSubmitting(true)
 
-    // Get the selected voice ID
-    const selectedVoice = voices[formData.voiceGender as keyof typeof voices]?.[formData.voiceStyle as 'casual' | 'formal']
-
-    const companionData = {
-      name: formData.name,
-      subject: formData.subject,
-      topic: formData.topic,
-      voice: selectedVoice || '',
-      style: formData.teachingStyle,
-      duration: formData.duration,
-    }
-
     try {
-      // Handle companion creation logic here
-      console.log('Creating companion:', companionData)
+      // Get the selected voice ID
+      const selectedVoice = voices[formData.voiceGender as keyof typeof voices]?.[formData.voiceStyle as 'casual' | 'formal']
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const submissionData = new FormData()
+      submissionData.append('name', formData.name)
+      submissionData.append('subject', formData.subject)
+      submissionData.append('topic', formData.topic)
+      submissionData.append('voice', selectedVoice || '')
+      submissionData.append('style', formData.teachingStyle)
+      submissionData.append('duration', formData.duration.toString())
 
-      // Redirect to companion page or show success message
-      alert('Companion created successfully!')
-      // You can redirect here: router.push('/companion')
-    } catch (error) {
+      const result = await createCompanion(null, submissionData)
+
+      if (result.message) {
+        throw new Error(result.message)
+      }
+
+      if (result.success && result.companionId) {
+        router.push(`/companion/${result.companionId}`)
+      }
+    } catch (error: any) {
       console.error('Error creating companion:', error)
-      alert('Failed to create companion. Please try again.')
+      alert(`Failed to create companion: ${error.message || 'Unknown error'}`)
     } finally {
       setIsSubmitting(false)
     }
@@ -139,8 +144,8 @@ const CompanionBuilderPage = () => {
                       type="button"
                       onClick={() => handleInputChange('subject', subject)}
                       className={`rounded-2xl border-2 p-4 text-left transition-all ${formData.subject === subject
-                          ? 'border-primary bg-primary/10'
-                          : 'border-black bg-white hover:shadow-md'
+                        ? 'border-primary bg-primary/10'
+                        : 'border-black bg-white hover:shadow-md'
                         }`}
                       style={{
                         borderColor: formData.subject === subject
@@ -199,8 +204,8 @@ const CompanionBuilderPage = () => {
                         type="button"
                         onClick={() => handleInputChange('voiceGender', 'male')}
                         className={`flex-1 rounded-xl border-2 p-3 transition-all ${formData.voiceGender === 'male'
-                            ? 'border-primary bg-primary/10'
-                            : 'border-border bg-background hover:border-primary/50'
+                          ? 'border-primary bg-primary/10'
+                          : 'border-border bg-background hover:border-primary/50'
                           }`}
                       >
                         <span className="font-medium">Male</span>
@@ -209,8 +214,8 @@ const CompanionBuilderPage = () => {
                         type="button"
                         onClick={() => handleInputChange('voiceGender', 'female')}
                         className={`flex-1 rounded-xl border-2 p-3 transition-all ${formData.voiceGender === 'female'
-                            ? 'border-primary bg-primary/10'
-                            : 'border-border bg-background hover:border-primary/50'
+                          ? 'border-primary bg-primary/10'
+                          : 'border-border bg-background hover:border-primary/50'
                           }`}
                       >
                         <span className="font-medium">Female</span>
@@ -226,8 +231,8 @@ const CompanionBuilderPage = () => {
                         type="button"
                         onClick={() => handleInputChange('voiceStyle', 'casual')}
                         className={`flex-1 rounded-xl border-2 p-3 transition-all ${formData.voiceStyle === 'casual'
-                            ? 'border-primary bg-primary/10'
-                            : 'border-border bg-background hover:border-primary/50'
+                          ? 'border-primary bg-primary/10'
+                          : 'border-border bg-background hover:border-primary/50'
                           }`}
                       >
                         <span className="font-medium">Casual</span>
@@ -236,8 +241,8 @@ const CompanionBuilderPage = () => {
                         type="button"
                         onClick={() => handleInputChange('voiceStyle', 'formal')}
                         className={`flex-1 rounded-xl border-2 p-3 transition-all ${formData.voiceStyle === 'formal'
-                            ? 'border-primary bg-primary/10'
-                            : 'border-border bg-background hover:border-primary/50'
+                          ? 'border-primary bg-primary/10'
+                          : 'border-border bg-background hover:border-primary/50'
                           }`}
                       >
                         <span className="font-medium">Formal</span>
@@ -263,8 +268,8 @@ const CompanionBuilderPage = () => {
                     type="button"
                     onClick={() => handleInputChange('teachingStyle', 'casual')}
                     className={`flex-1 rounded-xl border-2 p-3 transition-all ${formData.teachingStyle === 'casual'
-                        ? 'border-primary bg-primary/10'
-                        : 'border-border bg-background hover:border-primary/50'
+                      ? 'border-primary bg-primary/10'
+                      : 'border-border bg-background hover:border-primary/50'
                       }`}
                   >
                     <span className="font-medium">Casual</span>
@@ -276,8 +281,8 @@ const CompanionBuilderPage = () => {
                     type="button"
                     onClick={() => handleInputChange('teachingStyle', 'formal')}
                     className={`flex-1 rounded-xl border-2 p-3 transition-all ${formData.teachingStyle === 'formal'
-                        ? 'border-primary bg-primary/10'
-                        : 'border-border bg-background hover:border-primary/50'
+                      ? 'border-primary bg-primary/10'
+                      : 'border-border bg-background hover:border-primary/50'
                       }`}
                   >
                     <span className="font-medium">Formal</span>

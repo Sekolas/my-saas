@@ -4,8 +4,25 @@ import CompanionCard from '@/components/CompanionCard'
 import CompanionList from '@/components/ui/CompanionList'
 import CTA from '@/components/ui/CTA'
 import { completedLessons, recentSessions } from '@/constants'
+import { auth } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
 
-const Page = () => {
+const Page = async () => {
+  const { userId } = await auth()
+
+  if (userId) {
+    const supabase = await createClient()
+    const { data: companions } = await supabase
+      .from('companions')
+      .select('id')
+      .eq('author', userId)
+
+    if (!companions || companions.length === 0) {
+      redirect('/companion/new')
+    }
+  }
+
   return (
     <main>
       <h1 className='text-2xl underline'>Popular Companions</h1>
@@ -46,7 +63,7 @@ const Page = () => {
 
 
 
-    </main>
+    </main >
   )
 }
 
