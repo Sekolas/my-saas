@@ -325,6 +325,10 @@ interface NewDataItem {
 **Purpose**: Marketing section with sign-up prompt  
 **Features**: Badge, heading, description, buttons, image
 
+#### CompanionForm
+**Purpose**: Multi-step form for creating new companions
+**Features**: Real-time validation, server actions, voice/style selection, accessible inputs
+
 #### Navbar
 **Purpose**: Main navigation with auth  
 **Features**: Logo, nav items, Clerk auth buttons

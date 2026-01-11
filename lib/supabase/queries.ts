@@ -16,7 +16,7 @@ export async function getAllCompanions(userId: string): Promise<Companion[]> {
     const { data, error } = await supabase
         .from('companions')
         .select('*')
-        .eq('user_id', userId)
+        .eq('author', userId)
         .order('created_at', { ascending: false })
 
     if (error) throw error
