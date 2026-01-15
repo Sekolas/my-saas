@@ -8,7 +8,7 @@ interface CompanionCardProps {
     name: string
     topic: string
     subject: string
-    duration: string
+    duration: number | string
     color: string
     onLaunch?: () => void
     onBookmark?: () => void
@@ -26,10 +26,15 @@ const CompanionCard = ({
     onBookmark,
     isBookmarked = false
 }: CompanionCardProps) => {
+    const formatDuration = (dur: number | string) => {
+        if (typeof dur === 'string') return dur
+        return `${dur} mins`
+    }
+
     return (
         <div className="companion-card" style={{ background: color }}>
-            <div className="flex justify-between items-center">
-                <span className="subject-badge">{subject}</span>
+            <div className="companion-card-header">
+                <span className="companion-category">{subject.charAt(0).toUpperCase() + subject.slice(1)}</span>
                 <button
                     className="companion-bookmark"
                     onClick={onBookmark}
@@ -47,7 +52,7 @@ const CompanionCard = ({
 
             <div className="companion-duration">
                 <Clock size={16} />
-                <span>{duration} duration</span>
+                <span>{formatDuration(duration)} duration</span>
             </div>
 
             <Link href={`/companion/${id}`}>

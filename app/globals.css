@@ -154,7 +154,7 @@ body {
   }
 
   .companion-card {
-    @apply flex flex-col rounded-4xl border border-black px-6 py-6 gap-4 w-full min-lg:max-w-[410px] justify-between;
+    @apply flex flex-col rounded-4xl border border-black px-6 py-6 gap-4 w-full max-w-[360px] justify-between;
   }
 
   .companion-card-header {
@@ -166,7 +166,7 @@ body {
   }
 
   .companion-bookmark {
-    @apply bg-black text-white rounded-full p-2 cursor-pointer hover:bg-gray-800 transition-colors border-0;
+    @apply bg-black text-white rounded-lg p-2 cursor-pointer hover:bg-gray-800 transition-colors border-0 w-8 h-8 flex items-center justify-center;
   }
 
   .companion-title {
@@ -190,7 +190,7 @@ body {
   }
 
   .companion-bookmark {
-    @apply px-2 bg-black rounded-4xl flex items-center h-full aspect-square cursor-pointer;
+    @apply px-2 bg-black rounded-lg flex items-center h-8 w-8 cursor-pointer justify-center;
   }
 
   .input {

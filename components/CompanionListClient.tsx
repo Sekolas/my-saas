@@ -3,15 +3,11 @@
 import React, { useState, useMemo } from 'react'
 import CompanionCard from '@/components/CompanionCard'
 import { Input } from '@/components/ui/input'
-import { Search } from 'lucide-react'
+import { Search, ChevronDown } from 'lucide-react'
 import { Database } from '@/types/database.types'
+import { subjects, subjectsColors } from '@/constants'
 
 type Companion = Database['public']['Tables']['companions']['Row']
-
-const PASTEL_COLORS = [
-    '#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9',
-    '#BAE1FF', '#E6B3FF', '#FFB3E6', '#B3FFF6',
-]
 
 interface CompanionListClientProps {
     companions: Companion[]
@@ -19,43 +15,79 @@ interface CompanionListClientProps {
 
 const CompanionListClient = ({ companions }: CompanionListClientProps) => {
     const [searchTerm, setSearchTerm] = useState('')
+    const [selectedSubject, setSelectedSubject] = useState<string>('all')
 
-    const getRandomColor = (id: string) => {
-        const sum = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
-        return PASTEL_COLORS[sum % PASTEL_COLORS.length]
+    const getColorForSubject = (subject: string): string => {
+        const normalizedSubject = subject.toLowerCase()
+        return subjectsColors[normalizedSubject as keyof typeof subjectsColors] || '#E5D0FF'
     }
 
     const filteredCompanions = useMemo(() => {
-        if (!searchTerm.trim()) return companions
+        let result = companions
 
-        const term = searchTerm.toLowerCase()
-        return companions.filter(companion =>
-            companion.subject.toLowerCase().includes(term) ||
-            companion.topic.toLowerCase().includes(term)
-        )
-    }, [companions, searchTerm])
+        // Filter by subject
+        if (selectedSubject !== 'all') {
+            result = result.filter(companion =>
+                companion.subject.toLowerCase() === selectedSubject.toLowerCase()
+            )
+        }
+
+        // Filter by search term
+        if (searchTerm.trim()) {
+            const term = searchTerm.toLowerCase()
+            result = result.filter(companion =>
+                companion.name.toLowerCase().includes(term) ||
+                companion.subject.toLowerCase().includes(term) ||
+                companion.topic.toLowerCase().includes(term)
+            )
+        }
+
+        return result
+    }, [companions, searchTerm, selectedSubject])
 
     return (
-        <div className="container mx-auto p-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-                <h1 className="text-3xl font-bold">Companions</h1>
+        <div className="container mx-auto px-6 py-8">
+            {/* Header with Title and Filters */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                <h1 className="text-3xl font-bold">Companion Library</h1>
 
-                <div className="relative w-full max-w-md">
-                    <div className="relative flex items-center w-full h-14 rounded-full border-2 border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-transparent px-4">
-                        <Search className="h-5 w-5 text-gray-400 mr-3 shrink-0" />
-                        <Input
-                            type="search"
-                            placeholder="Search subject or topic..."
-                            className="flex-1 h-full border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent text-lg placeholder:text-gray-400 px-0"
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            value={searchTerm}
-                        />
+                <div className="flex gap-3 w-full md:w-auto">
+                    {/* Search Input */}
+                    <div className="relative flex-1 md:flex-initial md:w-64">
+                        <div className="relative flex items-center h-11 rounded-lg border border-gray-300 bg-white px-4">
+                            <Search className="h-4 w-4 text-gray-400 mr-2 shrink-0" />
+                            <Input
+                                type="search"
+                                placeholder="Search your companions..."
+                                className="flex-1 h-full border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent text-sm placeholder:text-gray-400 px-0"
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                value={searchTerm}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Subject Filter Dropdown */}
+                    <div className="relative">
+                        <select
+                            className="h-11 px-4 pr-10 rounded-lg border border-gray-300 bg-white text-sm font-medium appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            value={selectedSubject}
+                            onChange={(e) => setSelectedSubject(e.target.value)}
+                        >
+                            <option value="all">Select subject</option>
+                            {subjects.map((subject) => (
+                                <option key={subject} value={subject}>
+                                    {subject.charAt(0).toUpperCase() + subject.slice(1)}
+                                </option>
+                            ))}
+                        </select>
+                        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500 pointer-events-none" />
                     </div>
                 </div>
             </div>
 
+            {/* Cards Grid */}
             {filteredCompanions.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="companions-grid">
                     {filteredCompanions.map((companion) => (
                         <CompanionCard
                             key={companion.id}
@@ -63,15 +95,17 @@ const CompanionListClient = ({ companions }: CompanionListClientProps) => {
                             name={companion.name}
                             topic={companion.topic}
                             subject={companion.subject}
-                            duration={`${companion.duration} min`}
-                            color={getRandomColor(companion.id)}
+                            duration={companion.duration}
+                            color={getColorForSubject(companion.subject)}
                             isBookmarked={companion.bookmarked}
                         />
                     ))}
                 </div>
             ) : (
-                <div className="text-center py-10 text-gray-500">
-                    {searchTerm ? 'No companions found matching your search.' : 'No companions found. Create one to get started!'}
+                <div className="text-center py-16 text-gray-500">
+                    {searchTerm || selectedSubject !== 'all'
+                        ? 'No companions found matching your filters.'
+                        : 'No companions found. Create one to get started!'}
                 </div>
             )}
         </div>
