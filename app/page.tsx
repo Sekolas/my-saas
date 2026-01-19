@@ -33,7 +33,7 @@ const Page = async () => {
           name="Neura the Brainy Explorer"
           topic="Neural Network of the Brain"
           duration="45 mins"
-          color="linear-gradient(135deg, #e8d5f2 0%, #d4b5e8 100%)"
+          color="linear-gradient(135deg, #8636b1ff 0%, #d4b5e8 100%)"
         />
         <CompanionCard
           id="2"
@@ -41,7 +41,7 @@ const Page = async () => {
           name="Calculus the Number Wizard"
           topic="Advanced Calculus Concepts"
           duration="60 mins"
-          color="linear-gradient(135deg, #ffd5e8 0%, #ffb5d4 100%)"
+          color="linear-gradient(135deg, #d13c7fff 0%, #ffb5d4 100%)"
         />
         <CompanionCard
           id="3"
@@ -49,7 +49,7 @@ const Page = async () => {
           name="Chronos the Time Traveler"
           topic="Ancient Civilizations"
           duration="50 mins"
-          color="linear-gradient(135deg, #d5f2e8 0%, #b5e8d4 100%)"
+          color="linear-gradient(135deg, #32e4a5ff 0%, #b5e8d4 100%)"
         />
 
       </section>

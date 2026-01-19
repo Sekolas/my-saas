@@ -17,7 +17,8 @@ const Companion = async () => {
   }
 
   // Fetch ALL companions once (no search, no pagination for now)
-  const companions = await getAllCompanions(user.id, 100, 1)
+  const result = await getAllCompanions(user.id, 100, 1)
+  const companions = result.data
 
   return <CompanionListClient companions={companions} />
 }

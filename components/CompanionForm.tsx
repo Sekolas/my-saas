@@ -66,9 +66,21 @@ const CompanionForm = () => {
 
             const result = await createCompanion(null, submissionData)
 
-            if (result.message) throw new Error(result.message)
+            // Check if the action was successful
+            if (!result.success) {
+                // Handle validation errors
+                if (result.errors) {
+                    setErrors(result.errors)
+                }
+                // Show error message
+                if (result.message) {
+                    alert(result.message)
+                }
+                return
+            }
 
-            if (result.success && result.companionId) {
+            // Success - redirect to companion page
+            if (result.companionId) {
                 router.push(`/companion/${result.companionId}`)
             }
         } catch (error: any) {
